@@ -135,7 +135,7 @@ dind$DMCVD <- as.numeric(dind$bl_diabetes & dind$bl_cardio)
 dind$age_sq <- dind$bl_age^2
 dind$ss_le7 <- as.numeric(dind$bl_symp_days %in% c(1,2)) #indicator of duration of symptoms 0-6 days
 ### Data for stan model
-x_main <- model.matrix( ~ bl_age + age_sq + factor(bl_sex) + factor(who_enroll) +
+x_main <- model.matrix( ~ factor(age) + factor(bl_sex) + factor(who_enroll) +
                           bl_age* factor(who_enroll) +factor(bloodAAB) + factor(DMCVD) 
                         + factor(DMPD) + factor(ss_le7) + factor(bl_enrollqtr),data=dind)[, -1]
 x_inter <- dind[,.(who_5,who_6,who5_age,who6_age,bloodAAB,bl_cardio,DMPD)]
@@ -169,7 +169,7 @@ fit_sumry <- fit$summary(c("beta_1","beta_int","sigma_beta","beta_star"))
 
 date_stamp <- gsub("-", "", Sys.Date())
 dir.create(file.path("/gpfs/home/dw2625/r/BSIM/", date_stamp), showWarnings = FALSE)
-save(fit_sumry, file = paste0("/gpfs/home/dw2625/r/BSIM/", date_stamp, "/fit_sumry_original_withoutrct.rda"))
+save(fit_sumry, file = paste0("/gpfs/home/dw2625/r/BSIM/", date_stamp, "/fit_sumry_original_withoutrct_agecat.rda"))
 
 # beta_name<- expand.grid(variable=c("who_5","who_6","who5_age","who6_age","bloodAAB","bl_cardio","DMPD"),
 #             outcome=c("binary_outcome1","binary_outcome2","binary_outcome3","ordinal_outcome"))
